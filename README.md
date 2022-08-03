@@ -1,46 +1,36 @@
-# Getting Started with Create React App
+# Description
+This is an application of showing available products on the warehouse and registering user sales
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Requirements
 
-## Available Scripts
+## Features Roadmap
+- Show the list of available products
+- Show what articles are included in the product
+- Calculate products amount based on all available articles
+- add possibility to buy (register sale) a product
+- decrease the amount of available products and related articles
+- show notification to user on successful sale
 
-In the project directory, you can run:
+## Corner cases
+- still product in the list if he's unavailable, but prohibit its sale
+- not to be able to buy more products that are available in the list
 
-### `npm start`
+## Non Functional requirements:
+- Cover components with unit tests
+- Business and tech documentation
+- Meta tags for better SEO
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Technologies to be used
+1. Framework: React
+2. Language: TypeScript
+3. Styles: scss modules for styles encapsulation
+   In real world scenario I'd choose either Material-UI components library, or Tailwind with Headless-UI.
+   But in sake of simplicity and to show the way I manage css, in this solution I'll focus in own css implementation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## How to start FE:
+1. `yarn install`
+2. `yarn start`
+3. open `http://localhost:3000`
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## How to run unit tests:
+2. `yarn run test`
