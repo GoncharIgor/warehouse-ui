@@ -19,6 +19,17 @@ This is an application of showing available products on the warehouse and regist
 - Cover components with unit tests
 - Business and tech documentation
 - Meta tags for better SEO
+- prettier for code formatting
+
+# Start
+## How to start FE:
+1. `yarn install`
+2. `yarn start`
+3. open `http://localhost:3000`
+
+## How to run unit tests:
+2. `yarn run test`
+
 
 # Technologies to be used
 1. Framework: React
@@ -27,10 +38,11 @@ This is an application of showing available products on the warehouse and regist
    In real world scenario I'd choose either Material-UI components library, or Tailwind with Headless-UI.
    But in sake of simplicity and to show the way I manage css, in this solution I'll focus in own css implementation
 
-## How to start FE:
-1. `yarn install`
-2. `yarn start`
-3. open `http://localhost:3000`
 
-## How to run unit tests:
-2. `yarn run test`
+## Tech tasks that are out of scope, but I'd do them in next iterations
+- add "Husky" and "Commitizen" dependencies for ensuring PR process
+- add Jenkinsfile with pipeline for CI/CD
+- Cypress e2e tests to ensure complete user flows
+
+# Performance improvements:
+1. Decrease bundle size: separation of devDependencies
