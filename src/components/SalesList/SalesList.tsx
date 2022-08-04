@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { Sale } from '../../models';
-
-import styles from './SalesList.module.scss';
-import { getAllSales } from '../../services/sales';
+import { getAllSales } from '../../services';
 import { SaleItem } from '../SaleItem/SaleItem';
+
 import { useSalesStore } from '../../stores/sales';
 import { useProductsStore } from '../../stores/products';
+
+import styles from './SalesList.module.scss';
 
 export const SalesList = (): JSX.Element => {
     const { sales, setSales, setIsFetchingSalesFromApiErrorOccurred, fetchSalesFromServerError } =

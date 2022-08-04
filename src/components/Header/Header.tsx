@@ -1,4 +1,5 @@
 import styles from './Header.module.scss';
+
 import logoSrc from '../../assets/logo.png';
 import userAvatarSrc from '../../assets/user-avatar.jpeg';
 

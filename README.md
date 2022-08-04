@@ -48,15 +48,18 @@ This is an application of showing available products on the warehouse and regist
 - Cypress e2e tests to ensure complete user flows
 
 ## Performance improvements:
-1. Decrease bundle size: separation of devDependencies
-2. static files are stored in `src` folder that's managed by webpack optimization
-3. swap loading of fonts
+1. Store approach, decrease the amount of request to server
+2. Decrease bundle size: separation of devDependencies
+3. static files are stored in `src` folder that's managed by webpack optimization
+4. swap loading of fonts
 
 # What improvements would be good to make in the future:
 1. disable user click `Sell` button twice, while the request is being processed by the server
 2. Send second request to server for `products`, `articles` and `sales` if first one has failed
 3. Data caching for reducing our reliance on server stable responses
-4. Cover the rest of components with Unit tests
-5. `POST Sale` request to server has to go together with `PATCH Articles` bulk update. 
+4. useMemo and useCallback for memoization
+5. Cover the rest of components with Unit tests
+6. `POST Sale` request to server has to go together with `PATCH Articles` bulk update. 
 In case of failure of the last -> all changes have to be either reverted, or second retry to `PATCH Articles` has to be done
-6. When sale is confirmed - the refresh of available articles takes approximately 2 seconds. THis should be improved
+7. When sale is confirmed - the refresh of available articles takes approximately 2 seconds. THis should be improved
+8. Virtual scrolling or pagination for Sales list

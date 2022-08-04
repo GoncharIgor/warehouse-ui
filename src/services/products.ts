@@ -10,7 +10,9 @@ export async function getAllProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(productId: string): Promise<Product> {
-    return fetch(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products/${productId}`)
+    return fetch(
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products/${productId}`
+    )
         .then(handleErrors)
         .then((data) => data.json());
 }
@@ -18,7 +20,10 @@ export async function getProductById(productId: string): Promise<Product> {
 export async function addProduct(product: Product) {
     const reqOptions = generateRequestOptions('POST', { product });
 
-    return fetch(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products`, reqOptions).then((data) => data.json());
+    return fetch(
+        `${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products`,
+        reqOptions
+    ).then((data) => data.json());
 }
 
 export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[]): number => {

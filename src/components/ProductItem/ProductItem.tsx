@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'react-simple-snackbar';
 
 import { Article, Product } from '../../models';
-import { ArticleComponent } from '../ArticleItem/Article';
-import { calculateMaximumAmountOfProductsThatCanBeSold } from '../../services/products';
-import { SaleForm } from '../SaleForm/SaleForm';
-import { createSale } from '../../services/sales';
+import { ArticleItem, SaleForm } from '../../components';
+import {
+    articlesBulkUpdate,
+    calculateMaximumAmountOfProductsThatCanBeSold,
+    createSale
+} from '../../services';
 
 import { useArticleStore } from '../../stores/articles';
 import { useSalesStore } from '../../stores/sales';
 
 import styles from './ProductItem.module.scss';
-import { articlesBulkUpdate } from '../../services/articles';
 
 interface ProductProps {
     product: Product;
@@ -30,13 +31,13 @@ const snackBarOptions = {
 };
 
 export const ProductItem = ({ product }: ProductProps): JSX.Element => {
-    const { articles, isLoading, getArticleById, fetchArticlesFromServer, bulkUpdate } = useArticleStore();
+    const { articles, isLoading, getArticleById, bulkUpdate } = useArticleStore();
     const { addSale } = useSalesStore();
 
     const [productArticles, setProductArticles] = useState<Article[]>([]);
-
     const [openSnackbar] = useSnackbar(snackBarOptions);
 
+    // ProductItem component will be always loading after GET `/products` api request is finished in ProductList component
     useEffect(() => {
         if (!articles) {
             setProductArticles([]);
@@ -108,7 +109,7 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
 
     const renderArticles = () => {
         return productArticles.map((article: Article) => {
-            return <ArticleComponent key={`${product}-${article.id}`} article={article} />;
+            return <ArticleItem key={`${product}-${article.id}`} article={article} />;
         });
     };
 

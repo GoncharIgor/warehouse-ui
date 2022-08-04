@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { Product } from '../../models';
-import { ProductItem } from '../ProductItem/ProductItem';
-import { getAllProducts } from '../../services/products';
+import { ProductItem } from '../../components';
+import { getAllProducts, getAllArticles } from '../../services';
+
+import { useArticleStore } from '../../stores/articles';
+import { useProductsStore } from '../../stores/products';
 
 import styles from './ProductList.module.scss';
-import { useArticleStore } from '../../stores/articles';
-import { getAllArticles } from '../../services/articles';
-import { useProductsStore } from '../../stores/products';
 
 export const ProductList = (): JSX.Element => {
     const { setArticles, setIsFetchingArticlesFromApiErrorOccurred, setIsLoadingArticles } =
@@ -21,6 +21,7 @@ export const ProductList = (): JSX.Element => {
     } = useProductsStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    // 2 GET requests for products and articles are loaded in parallel in 2 separate useEffect hooks
     useEffect(() => {
         let mounted = true;
         setIsLoading(true);
