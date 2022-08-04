@@ -1,24 +1,24 @@
 import { Article, Product } from '../models';
 import { generateRequestOptions, handleErrors } from '../utils/ApiErrorHandler';
 
-export function getAllProducts(): Promise<Product[]> {
-    return fetch('http://localhost:7005/products')
+export async function getAllProducts(): Promise<Product[]> {
+    return fetch(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products`)
         .then(handleErrors)
         .then((data) => {
             return data.json();
         });
 }
 
-export function getProductById(productId: string): Promise<Product> {
-    return fetch(`http://localhost:7005/products/${productId}`)
+export async function getProductById(productId: string): Promise<Product> {
+    return fetch(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products/${productId}`)
         .then(handleErrors)
         .then((data) => data.json());
 }
 
-export function addProduct(product: Product) {
+export async function addProduct(product: Product) {
     const reqOptions = generateRequestOptions('POST', { product });
 
-    return fetch('http://localhost:7005/products', reqOptions).then((data) => data.json());
+    return fetch(`${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/products`, reqOptions).then((data) => data.json());
 }
 
 export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[]): number => {

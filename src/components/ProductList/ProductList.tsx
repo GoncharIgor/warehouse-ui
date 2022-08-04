@@ -28,7 +28,6 @@ export const ProductList = (): JSX.Element => {
         (async () => {
             try {
                 const loadedProductsFromApi = await getAllProducts();
-                console.log('Products loaded:', loadedProductsFromApi.length);
                 setProducts(loadedProductsFromApi);
                 setIsLoading(false);
             } catch (err) {
@@ -52,7 +51,6 @@ export const ProductList = (): JSX.Element => {
             try {
                 setIsLoadingArticles(true);
                 const loadedArticlesFromApi = await getAllArticles();
-                console.log('Articles loaded:', loadedArticlesFromApi.length);
                 setArticles(loadedArticlesFromApi || []);
                 setIsLoadingArticles(false);
             } catch (err) {

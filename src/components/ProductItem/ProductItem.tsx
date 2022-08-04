@@ -11,6 +11,7 @@ import { useArticleStore } from '../../stores/articles';
 import { useSalesStore } from '../../stores/sales';
 
 import styles from './ProductItem.module.scss';
+import { articlesBulkUpdate } from '../../services/articles';
 
 interface ProductProps {
     product: Product;
@@ -29,7 +30,7 @@ const snackBarOptions = {
 };
 
 export const ProductItem = ({ product }: ProductProps): JSX.Element => {
-    const { articles, isLoading } = useArticleStore();
+    const { articles, isLoading, getArticleById, fetchArticlesFromServer, bulkUpdate } = useArticleStore();
     const { addSale } = useSalesStore();
 
     const [productArticles, setProductArticles] = useState<Article[]>([]);
@@ -63,11 +64,32 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
                 // because we only display sales for current user - we can update salesStore
                 // and display updated data to user, without additional request to server
                 addSale(newlyAddedSale);
+
+                let articlesForBulkUpdate: Article[] = [];
+
+                product.articles.forEach((article) => {
+                    const clonedArticleFromStore = JSON.parse(
+                        JSON.stringify(getArticleById(article.id))
+                    ) as Article;
+                    clonedArticleFromStore.amountInStock -=
+                        article.amountRequired * numberOfProductsThatUserWantsToBuy;
+                    delete clonedArticleFromStore.amountRequired;
+
+                    articlesForBulkUpdate.push(clonedArticleFromStore);
+                });
+
+                articlesBulkUpdate(articlesForBulkUpdate)
+                    .then((response: Article[]) => {
+                        bulkUpdate(response);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+
                 openSnackbar(`${product.name} was sold in amount of ${newlyAddedSale.amountSold}`);
             })
             .catch((err) => {
                 console.log(err);
-                console.log('Error occurred while adding sale');
                 openSnackbar(`Error occurred while adding ${product.name} sale`);
             });
     };
@@ -75,8 +97,6 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
     const renderSaleForm = () => {
         const maxAmountOfProductsForSale =
             calculateMaximumAmountOfProductsThatCanBeSold(productArticles);
-
-        // const maxAmountOfProductsForSale = 2;
 
         return (
             <SaleForm
@@ -104,7 +124,7 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
                             <tr>
                                 <th>Article</th>
                                 <th>Required</th>
-                                <th>Total</th>
+                                <th>Available</th>
                             </tr>
                         </thead>
                         <tbody>{renderArticles()}</tbody>

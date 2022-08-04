@@ -23,7 +23,6 @@ export const SalesList = (): JSX.Element => {
         (async () => {
             try {
                 const loadedSalesFromApi = await getAllSales();
-                console.log('Sales loaded:', loadedSalesFromApi.length);
                 setSales(loadedSalesFromApi);
                 setIsLoading(false);
             } catch (err) {

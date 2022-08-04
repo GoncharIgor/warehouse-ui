@@ -57,3 +57,6 @@ This is an application of showing available products on the warehouse and regist
 2. Send second request to server for `products`, `articles` and `sales` if first one has failed
 3. Data caching for reducing our reliance on server stable responses
 4. Cover the rest of components with Unit tests
+5. `POST Sale` request to server has to go together with `PATCH Articles` bulk update. 
+In case of failure of the last -> all changes have to be either reverted, or second retry to `PATCH Articles` has to be done
+6. When sale is confirmed - the refresh of available articles takes approximately 2 seconds. THis should be improved
