@@ -30,6 +30,7 @@ export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[
         if (articles[i].amountInStock === 0) {
             possibleAmountOfProductsPerArticle.push(0);
         } else if (!articles[i].amountRequired) {
+            // in case smb by mistake put "0" value in DB
             continue;
         } else {
             possibleAmountOfProductsPerArticle.push(
@@ -38,6 +39,5 @@ export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[
         }
     }
 
-    // filter out zero values
-    return Math.min.apply(null, possibleAmountOfProductsPerArticle.filter(Boolean));
+    return Math.min(...possibleAmountOfProductsPerArticle);
 };

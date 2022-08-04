@@ -8,7 +8,7 @@ import { SaleForm } from '../SaleForm/SaleForm';
 import { createSale } from '../../services/sales';
 
 import { useArticleStore } from '../../stores/articles';
-import {useSalesStore} from "../../stores/sales";
+import { useSalesStore } from '../../stores/sales';
 
 import styles from './ProductItem.module.scss';
 

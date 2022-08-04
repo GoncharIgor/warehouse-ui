@@ -1,5 +1,5 @@
 import create from 'zustand';
-import {Article, Sale} from '../models';
+import { Article, Sale } from '../models';
 
 interface SalesStore {
     sales: Sale[];
@@ -20,5 +20,5 @@ export const useSalesStore = create<SalesStore>((set, get) => ({
     },
     addSale: (newSale: Sale) => {
         set((store) => ({ sales: [...store.sales, newSale] }));
-    },
+    }
 }));
