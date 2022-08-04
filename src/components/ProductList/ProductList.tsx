@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { Product as ProductType } from '../../models';
-import { Product } from '../Product/Product';
+import { Product } from '../../models';
+import { ProductItem } from '../ProductItem/ProductItem';
 import { getAllProducts } from '../../services/products';
 
 import styles from './ProductList.module.scss';
 
 export const ProductList = (): JSX.Element => {
-    const [products, setProducts] = useState<ProductType[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -34,8 +34,8 @@ export const ProductList = (): JSX.Element => {
     }, []);
 
     const renderProducts = () => {
-        return products.map((product: ProductType) => {
-            return <Product key={product.id} product={product} />;
+        return products.map((product: Product) => {
+            return <ProductItem key={product.id} product={product} />;
         });
     };
 

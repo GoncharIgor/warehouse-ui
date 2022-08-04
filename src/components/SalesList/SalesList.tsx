@@ -6,7 +6,7 @@ import { Product as ProductType, Sale as SaleType } from '../../models';
 import styles from './SalesList.module.scss';
 import { getAllSales } from '../../services/sales';
 import { getProductById } from '../../services/products';
-import { SaleComponent } from '../Sale/SaleComponent';
+import { SaleItem } from '../SaleItem/SaleItem';
 
 export const SalesList = (): JSX.Element => {
     const [sales, setSales] = useState<SaleType[]>([]);
@@ -39,7 +39,7 @@ export const SalesList = (): JSX.Element => {
             .sort(function (a, b) {
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             })
-            .map((sale: SaleType) => <SaleComponent sale={sale} key={sale.id} />);
+            .map((sale: SaleType) => <SaleItem sale={sale} key={sale.id} />);
     };
 
     return (

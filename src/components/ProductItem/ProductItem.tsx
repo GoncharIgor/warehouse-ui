@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'react-simple-snackbar';
 
-import { Article as ArticleType, Product as ProductType } from '../../models';
+import { Article, Product } from '../../models';
 
-import styles from './Product.module.scss';
 import { getArticleById } from '../../services/articles';
-import { ArticleComponent } from '../Article/Article';
+import { ArticleComponent } from '../ArticleItem/Article';
 import { calculateMaximumAmountOfProductsThatCanBeSold } from '../../services/products';
 import { SaleForm } from '../SaleForm/SaleForm';
 import { createSale } from '../../services/sales';
 
+import styles from './ProductItem.module.scss';
+
 interface ProductProps {
-    product: ProductType;
+    product: Product;
 }
 
 const snackBarOptions = {
@@ -26,8 +27,8 @@ const snackBarOptions = {
     }
 };
 
-export const Product = ({ product }: ProductProps): JSX.Element => {
-    const [articles, setArticles] = useState<ArticleType[]>([]);
+export const ProductItem = ({ product }: ProductProps): JSX.Element => {
+    const [articles, setArticles] = useState<Article[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [dataFetchFinished, setDataFetchFinished] = useState<boolean>(false);
 
@@ -83,7 +84,7 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
     };
 
     const renderArticles = () => {
-        return articles.map((article: ArticleType) => {
+        return articles.map((article: Article) => {
             return <ArticleComponent key={`${product}-${article.id}`} article={article} />;
         });
     };

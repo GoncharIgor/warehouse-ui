@@ -1,8 +1,14 @@
 import styles from './Header.module.scss';
+import logoSrc from '../../assets/logo.png';
+import userAvatarSrc from '../../assets/user-avatar.jpeg';
 
 export const Header = ({ title }: { title: string }): JSX.Element => (
     <div className={styles.header}>
-        <p className={styles.logo}>{title}</p>
-        <img className={styles.avatar} src="user-avatar.jpeg" alt="user-avatar" />
+        <div className={styles.logo}>
+            <img src={logoSrc} alt="logo"/>
+            {title}
+        </div>
+
+        <img className={styles.avatar} src={userAvatarSrc} alt="user-avatar" />
     </div>
 );

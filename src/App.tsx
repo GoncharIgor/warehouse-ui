@@ -1,6 +1,5 @@
 import React from 'react';
 import Tabs from 'react-bootstrap/Tabs';
-// import logo from './assets/logo.svg';
 
 import { Header, ProductList } from './components';
 

@@ -1,3 +1,4 @@
 export { Header } from './Header/Header';
-export { Product } from './Product/Product';
+export { ProductItem } from './ProductItem/ProductItem';
 export { ProductList } from './ProductList/ProductList';
+export { SaleItem } from './SaleItem/SaleItem';

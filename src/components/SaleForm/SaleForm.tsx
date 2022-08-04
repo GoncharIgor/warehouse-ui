@@ -1,4 +1,4 @@
-import styles from '../Product/Product.module.scss';
+import styles from '../ProductItem/ProductItem.module.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';

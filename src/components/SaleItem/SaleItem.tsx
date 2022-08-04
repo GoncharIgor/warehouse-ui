@@ -13,7 +13,7 @@ interface SaleProps {
   console.log(product);
   */
 
-export const SaleComponent = ({ sale }: SaleProps): JSX.Element => {
+export const SaleItem = ({ sale }: SaleProps): JSX.Element => {
     const [productName, setProductName] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');

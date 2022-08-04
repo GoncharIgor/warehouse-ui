@@ -1,7 +1,7 @@
-import { Article as ArticleType, Product as ProductType } from '../models';
+import { Article, Product } from '../models';
 import { generateRequestOptions, handleErrors } from '../utils/ApiErrorHandler';
 
-export function getAllProducts(): Promise<ProductType[]> {
+export function getAllProducts(): Promise<Product[]> {
     return fetch('http://localhost:7005/products')
         .then(handleErrors)
         .then((data) => {
@@ -9,19 +9,19 @@ export function getAllProducts(): Promise<ProductType[]> {
         });
 }
 
-export function getProductById(productId: string): Promise<ProductType> {
+export function getProductById(productId: string): Promise<Product> {
     return fetch(`http://localhost:7005/products/${productId}`)
         .then(handleErrors)
         .then((data) => data.json());
 }
 
-export function addProduct(product: ProductType) {
+export function addProduct(product: Product) {
     const reqOptions = generateRequestOptions('POST', { product });
 
     return fetch('http://localhost:7005/products', reqOptions).then((data) => data.json());
 }
 
-export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: ArticleType[]): number => {
+export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[]): number => {
     if (!articles.length) return 0;
 
     let possibleAmountPerArticle = [];
