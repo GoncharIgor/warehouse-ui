@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 
 import { Product as ProductType } from '../../models';
 import { Product } from '../Product/Product';
-import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
+import { getAllProducts } from '../../services/products';
 
 import styles from './ProductList.module.scss';
-import { getAllProducts } from '../../services/products';
 
 export const ProductList = (): JSX.Element => {
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -40,9 +40,13 @@ export const ProductList = (): JSX.Element => {
     };
 
     return (
-        <div>
+        <div className={styles['product-list']}>
             <h2 className="global-header-2">Products List</h2>
-            {isLoading ? <LoadingSpinner /> : <div className={styles.list}>{renderProducts()}</div>}
+            {isLoading ? (
+                <Spinner animation="border" variant="primary" />
+            ) : (
+                <div className={styles['product-items']}>{renderProducts()}</div>
+            )}
             {errorMessage && <div className="global-error-message">{errorMessage}</div>}
         </div>
     );

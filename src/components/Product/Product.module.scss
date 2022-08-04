@@ -1,47 +1,50 @@
 .product {
-  padding: 12px;
-  background: #9ddeff;
-  border-radius: 4px;
+    padding: 12px;
+    background: #9ddeff;
+    border-radius: 4px;
 
-  h4 {
-    margin-bottom: 20px;
-  }
-
-  .articles-table {
-    width: 100%;
-    min-width: 360px;
-    border-collapse: collapse;
-    table-layout: fixed;
-
-    tbody {
-      &:before {
-        content: '@';
-        display: block;
-        line-height: 10px;
-        text-indent: -99999px;
-      }
-
-      td {
-        padding: 10px;
-      }
-
-      tr {
-        border-bottom: 1px solid black;
-
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(219, 222, 224, 0.5);
-        }
-      }
+    h4 {
+        margin-bottom: 20px;
+        text-align: center;
     }
-  }
 
-  .sale-form {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    .articles-table {
+        width: 100%;
+        min-width: 360px;
+        border-collapse: collapse;
+        table-layout: fixed;
+
+        thead tr th {
+            padding-left: 10px;
+        }
+
+        tbody {
+            &:before {
+                content: '@';
+                display: block;
+                line-height: 10px;
+                text-indent: -99999px;
+            }
+
+            td {
+                padding: 10px;
+            }
+
+            tr {
+                border-bottom: 1px solid black;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #63ccff;
+                }
+            }
+        }
+    }
+
+    .sale-form {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
-
-

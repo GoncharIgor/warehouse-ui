@@ -3,4 +3,4 @@ export const handleErrors = (response: Response): Response => {
         throw Error(response.statusText);
     }
     return response;
-}
+};

@@ -1,13 +1,18 @@
-.list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: minmax(120px, auto);
-  gap: 20px;
+.product-list {
+    display: flex;
+    flex-direction: column;
+
+    .list-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: minmax(120px, auto);
+        gap: 20px;
+    }
 }
 
 @media screen and (max-width: 768px) {
-  .list {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+    .list {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 }

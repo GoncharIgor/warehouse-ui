@@ -8,6 +8,8 @@ import { Article as ArticleType, Product as ProductType } from '../../models';
 import styles from './Product.module.scss';
 import { getArticleById } from '../../services/articles';
 import { ArticleComponent } from '../Article/Article';
+import { calculateMaximumAmountOfProductsThatCanBeSold } from '../../services/products';
+import { SaleForm } from '../SaleForm/SaleForm';
 
 interface ProductProps {
     product: ProductType;
@@ -19,6 +21,8 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
     const [dataFetchFinished, setDataFetchFinished] = useState<boolean>(false);
 
     useEffect(() => {
+        // We render articles list only if all related articles are successfully fetched
+        // Partial information will lead to incorrect operations of warehouse employees
         const promises = product.articles.map((article) => {
             return getArticleById(article.id).then((loadedArticle) => {
                 loadedArticle.amountRequired = article.amountRequired;
@@ -40,42 +44,17 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
             });
     }, []);
 
-    const calculateMaximumSale = (): number => {
-        if (!articles.length) return 0;
-
-        let possibleAmountPerArticle = [];
-
-        for (let i = 0; i < articles.length; i++) {
-            if (articles[i].amountInStock === 0) {
-                possibleAmountPerArticle.push(0)
-            } else if (!articles[i].amountRequired) {
-                continue;
-            } else {
-                possibleAmountPerArticle.push(
-                    Math.floor(articles[i].amountInStock / articles[i].amountRequired!)
-                );
-            }
-        }
-
-        return Math.min.apply(null, possibleAmountPerArticle.filter(Boolean));
-    };
-
-    const selectHandler = (value: number) => {
-        console.log(value);
+    const selectHandler = (numberOfProductsThatUserWantsToBuy: number) => {
+        console.log(numberOfProductsThatUserWantsToBuy);
     };
 
     const renderSaleForm = () => {
-        const maxAmountOfProductsForSale = calculateMaximumSale();
-
+        const maxAmountOfProductsForSale = calculateMaximumAmountOfProductsThatCanBeSold(articles);
         return (
-            <div className={styles['sale-form']}>
-                <DropdownButton id="products-amount" title="Available amount">
-                    {[...Array(maxAmountOfProductsForSale)].map((e, i) => (
-                        <Dropdown.Item key={i} onClick={() => selectHandler(i+1)}>{i+1}</Dropdown.Item>
-                    ))}
-                </DropdownButton>
-                <Button variant="primary">Sale</Button>{' '}
-            </div>
+            <SaleForm
+                maxAmountOfProductsForSale={maxAmountOfProductsForSale}
+                selectHandler={selectHandler}
+            />
         );
     };
 

@@ -1,8 +1,10 @@
 export type Product = {
     id?: string;
     name: string;
-    articles: [{
-        id: string;
-        amountRequired: number;
-    }];
-}
+    articles: [
+        {
+            id: string;
+            amountRequired: number;
+        }
+    ];
+};
