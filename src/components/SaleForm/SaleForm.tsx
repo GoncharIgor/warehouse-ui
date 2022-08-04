@@ -1,4 +1,3 @@
-import { Article } from '../../models';
 import styles from '../Product/Product.module.scss';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -7,12 +6,12 @@ import React, { useState } from 'react';
 
 interface SaleFormProps {
     maxAmountOfProductsForSale: number;
-    selectHandler: (numberOfProductsThatUserWantsToBuy: number) => void;
+    submitHandler: (numberOfProductsThatUserWantsToBuy: number) => void;
 }
 
 export const SaleForm = ({
     maxAmountOfProductsForSale,
-    selectHandler
+    submitHandler
 }: SaleFormProps): JSX.Element => {
     const [selectedAmountOfProducts, setSelectedAmountOfProducts] = useState(0);
 
@@ -28,7 +27,7 @@ export const SaleForm = ({
             <Button
                 variant="primary"
                 disabled={selectedAmountOfProducts === 0}
-                onClick={() => selectHandler(selectedAmountOfProducts)}
+                onClick={() => submitHandler(selectedAmountOfProducts)}
             >
                 Sale
             </Button>{' '}

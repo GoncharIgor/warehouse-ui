@@ -38,6 +38,39 @@ h2 {
     color: lightcoral;
 }
 
+.global-borderless-table {
+    width: 100%;
+    min-width: 360px;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    thead tr th {
+        padding-left: 10px;
+    }
+
+    tbody {
+        &:before {
+            content: '@';
+            display: block;
+            line-height: 10px;
+            text-indent: -99999px;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        tr {
+            border-bottom: 1px solid black;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #63ccff;
+            }
+        }
+    }
+}
+
 .spinner-border {
     margin: 0 auto;
 }

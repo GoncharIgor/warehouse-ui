@@ -4,3 +4,11 @@ export const handleErrors = (response: Response): Response => {
     }
     return response;
 };
+
+export const generateRequestOptions = (method: string, body: object) => {
+    return {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+};

@@ -11,7 +11,7 @@
 }
 
 @media screen and (max-width: 768px) {
-    .product-items {
+    .product-list .product-items {
         grid-template-columns: 1fr;
         gap: 16px;
     }

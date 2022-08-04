@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { Product as ProductType, Sale as SaleType } from '../../models';
-import { Product } from '../Product/Product';
 
 import styles from './SalesList.module.scss';
-import { getAllProducts } from '../../services/products';
 import { getAllSales } from '../../services/sales';
+import { getProductById } from '../../services/products';
+import { SaleComponent } from '../Sale/SaleComponent';
 
 export const SalesList = (): JSX.Element => {
     const [sales, setSales] = useState<SaleType[]>([]);
@@ -35,18 +35,29 @@ export const SalesList = (): JSX.Element => {
     }, []);
 
     const renderSales = () => {
-        return sales.map((sale: SaleType) => {
-            return <p key={sale.id}>{sale.amountSold}</p>;
-        });
+        return sales
+            .sort(function (a, b) {
+                return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            })
+            .map((sale: SaleType) => <SaleComponent sale={sale} key={sale.id} />);
     };
 
     return (
-        <div className={styles['product-list']}>
+        <div className={styles['sales-list']}>
             <h2 className="global-header-2">Sales List</h2>
             {isLoading ? (
                 <Spinner animation="border" variant="primary" />
             ) : (
-                <div className={styles['list-items']}>{renderSales()}</div>
+                <table className="global-borderless-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Amount Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>{renderSales()}</tbody>
+                </table>
             )}
             {errorMessage && <div className="global-error-message">{errorMessage}</div>}
         </div>

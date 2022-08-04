@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useSnackbar } from 'react-simple-snackbar';
 
 import { Article as ArticleType, Product as ProductType } from '../../models';
 
@@ -10,15 +8,30 @@ import { getArticleById } from '../../services/articles';
 import { ArticleComponent } from '../Article/Article';
 import { calculateMaximumAmountOfProductsThatCanBeSold } from '../../services/products';
 import { SaleForm } from '../SaleForm/SaleForm';
+import { createSale } from '../../services/sales';
 
 interface ProductProps {
     product: ProductType;
 }
 
+const snackBarOptions = {
+    style: {
+        backgroundColor: 'rgb(0 128 0 / 28%)',
+        color: 'black',
+        fontSize: '18px'
+    },
+    closeStyle: {
+        color: 'black',
+        fontSize: '16px'
+    }
+};
+
 export const Product = ({ product }: ProductProps): JSX.Element => {
     const [articles, setArticles] = useState<ArticleType[]>([]);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [dataFetchFinished, setDataFetchFinished] = useState<boolean>(false);
+
+    const [openSnackbar] = useSnackbar(snackBarOptions);
 
     useEffect(() => {
         // We render articles list only if all related articles are successfully fetched
@@ -44,8 +57,19 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
             });
     }, []);
 
-    const selectHandler = (numberOfProductsThatUserWantsToBuy: number) => {
-        console.log(numberOfProductsThatUserWantsToBuy);
+    const saleSubmitHandler = (numberOfProductsThatUserWantsToBuy: number) => {
+        createSale({
+            amountSold: numberOfProductsThatUserWantsToBuy,
+            productId: product.id
+        })
+            .then((res) => {
+                // @ts-ignore
+                openSnackbar(`${product.name} was sold in amount of ${res.amountSold}`);
+            })
+            .catch((err) => {
+                console.log(err);
+                console.log('Error occured while adding sale');
+            });
     };
 
     const renderSaleForm = () => {
@@ -53,7 +77,7 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
         return (
             <SaleForm
                 maxAmountOfProductsForSale={maxAmountOfProductsForSale}
-                selectHandler={selectHandler}
+                submitHandler={saleSubmitHandler}
             />
         );
     };
@@ -71,7 +95,7 @@ export const Product = ({ product }: ProductProps): JSX.Element => {
                 <div>Loading Articles...</div>
             ) : articles.length === product.articles.length ? (
                 <>
-                    <table className={styles['articles-table']}>
+                    <table className="global-borderless-table">
                         <thead>
                             <tr>
                                 <th>Article</th>
