@@ -7,10 +7,12 @@ import styles from './SalesList.module.scss';
 import { getAllSales } from '../../services/sales';
 import { SaleItem } from '../SaleItem/SaleItem';
 import { useSalesStore } from '../../stores/sales';
+import { useProductsStore } from '../../stores/products';
 
 export const SalesList = (): JSX.Element => {
     const { sales, setSales, setIsFetchingSalesFromApiErrorOccurred, fetchSalesFromServerError } =
         useSalesStore();
+    const { getProductById } = useProductsStore();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -26,9 +28,7 @@ export const SalesList = (): JSX.Element => {
                 setIsLoading(false);
             } catch (err) {
                 console.log(err);
-                setIsFetchingSalesFromApiErrorOccurred(
-                    'Unable to fetch products from the Database'
-                );
+                setIsFetchingSalesFromApiErrorOccurred('Unable to fetch sales from the Database');
                 setIsLoading(false);
             }
         })();
@@ -43,7 +43,11 @@ export const SalesList = (): JSX.Element => {
             .sort(function (a, b) {
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             })
-            .map((sale: Sale) => <SaleItem sale={sale} key={sale.id} />);
+            .map((sale: Sale) => {
+                const product = getProductById(sale.productId);
+
+                return <SaleItem sale={sale} key={sale.id} productName={product?.name} />;
+            });
     };
 
     return (
@@ -51,6 +55,8 @@ export const SalesList = (): JSX.Element => {
             <h2 className="global-header-2">Sales List</h2>
             {isLoading ? (
                 <Spinner animation="border" variant="primary" />
+            ) : fetchSalesFromServerError ? (
+                <div className="global-error-message">{fetchSalesFromServerError}</div>
             ) : (
                 <table className="global-borderless-table">
                     <thead>
@@ -62,9 +68,6 @@ export const SalesList = (): JSX.Element => {
                     </thead>
                     <tbody>{renderSales()}</tbody>
                 </table>
-            )}
-            {fetchSalesFromServerError && (
-                <div className="global-error-message">{fetchSalesFromServerError}</div>
             )}
         </div>
     );

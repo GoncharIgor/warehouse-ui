@@ -40,8 +40,7 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
         }
 
         let allArticlesPerProductResult: Article[] = [];
-        // const articleIdsPerProduct = product.articles.map((article) => article.id);
-        const articleIdsPerProduct = product.articles.map((article) => {
+        product.articles.forEach((article) => {
             let foundArticle = articles.find((articleInStore) => articleInStore.id === article.id);
 
             if (foundArticle) {
@@ -50,10 +49,6 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
             }
         });
 
-        /*const allArticlesPerProduct = articles.filter((articleInStore) =>
-            articleIdsPerProduct.includes(articleInStore.id)
-        );
-        setProductArticles(allArticlesPerProduct);*/
         setProductArticles(allArticlesPerProductResult);
     }, [articles]);
 
