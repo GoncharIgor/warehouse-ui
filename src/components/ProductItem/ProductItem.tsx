@@ -10,6 +10,7 @@ import { SaleForm } from '../SaleForm/SaleForm';
 import { createSale } from '../../services/sales';
 
 import styles from './ProductItem.module.scss';
+import { useArticleStore } from '../../stores/articles';
 
 interface ProductProps {
     product: Product;
@@ -28,35 +29,33 @@ const snackBarOptions = {
 };
 
 export const ProductItem = ({ product }: ProductProps): JSX.Element => {
-    const [articles, setArticles] = useState<Article[]>([]);
-    const [errorMessage, setErrorMessage] = useState<string>('');
-    const [dataFetchFinished, setDataFetchFinished] = useState<boolean>(false);
+    const [productArticles, setProductArticles] = useState<Article[]>([]);
+    const { articles, isLoading } = useArticleStore();
 
     const [openSnackbar] = useSnackbar(snackBarOptions);
 
     useEffect(() => {
-        // We render articles list only if all related articles are successfully fetched
-        // Partial information will lead to incorrect operations of warehouse employees
-        const promises = product.articles.map((article) => {
-            return getArticleById(article.id).then((loadedArticle) => {
-                loadedArticle.amountRequired = article.amountRequired;
-                return loadedArticle;
-            });
+        if (!articles) {
+            setProductArticles([]);
+        }
+
+        let allArticlesPerProductResult: Article[] = [];
+        // const articleIdsPerProduct = product.articles.map((article) => article.id);
+        const articleIdsPerProduct = product.articles.map((article) => {
+            let foundArticle = articles.find((articleInStore) => articleInStore.id === article.id);
+
+            if (foundArticle) {
+                foundArticle.amountRequired = article.amountRequired;
+                allArticlesPerProductResult.push(foundArticle);
+            }
         });
 
-        Promise.all(promises)
-            .then((fetchedArticlesForCurrentProduct) => {
-                const filteredSuccessfulArticlesForCurrentProduct =
-                    fetchedArticlesForCurrentProduct.filter((article) => !!article.name);
-
-                setArticles(filteredSuccessfulArticlesForCurrentProduct);
-                setDataFetchFinished(true);
-            })
-            .catch((error) => {
-                setDataFetchFinished(true);
-                setErrorMessage('Could not retrieve articles for this product from Database');
-            });
-    }, []);
+        /*const allArticlesPerProduct = articles.filter((articleInStore) =>
+            articleIdsPerProduct.includes(articleInStore.id)
+        );
+        setProductArticles(allArticlesPerProduct);*/
+        setProductArticles(allArticlesPerProductResult);
+    }, [articles]);
 
     const saleSubmitHandler = (numberOfProductsThatUserWantsToBuy: number) => {
         createSale({
@@ -74,7 +73,11 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
     };
 
     const renderSaleForm = () => {
-        const maxAmountOfProductsForSale = calculateMaximumAmountOfProductsThatCanBeSold(articles);
+        const maxAmountOfProductsForSale =
+            calculateMaximumAmountOfProductsThatCanBeSold(productArticles);
+
+        // const maxAmountOfProductsForSale = 2;
+
         return (
             <SaleForm
                 maxAmountOfProductsForSale={maxAmountOfProductsForSale}
@@ -84,7 +87,7 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
     };
 
     const renderArticles = () => {
-        return articles.map((article: Article) => {
+        return productArticles.map((article: Article) => {
             return <ArticleComponent key={`${product}-${article.id}`} article={article} />;
         });
     };
@@ -92,9 +95,9 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
     return (
         <div className={styles.product}>
             <h4>{product.name}</h4>
-            {!dataFetchFinished ? (
-                <div>Loading Articles...</div>
-            ) : articles.length === product.articles.length ? (
+            {isLoading ? (
+                <div className={styles['loading-message']}>Loading articles...</div>
+            ) : !!productArticles.length ? (
                 <>
                     <table className="global-borderless-table">
                         <thead>
@@ -110,7 +113,7 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
                 </>
             ) : (
                 <div className="global-error-message">
-                    {errorMessage || 'Could not load articles'}
+                    {'Could not load articles from Database'}
                 </div>
             )}
         </div>

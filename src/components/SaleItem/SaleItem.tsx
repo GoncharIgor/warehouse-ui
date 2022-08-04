@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 import { Sale } from '../../models';
 
 import { getProductById } from '../../services/products';
+import { useProductsStore } from '../../stores/products';
 
 interface SaleProps {
     sale: Sale;
@@ -14,6 +15,8 @@ interface SaleProps {
   */
 
 export const SaleItem = ({ sale }: SaleProps): JSX.Element => {
+    const { products } = useProductsStore();
+
     const [productName, setProductName] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');

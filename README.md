@@ -7,13 +7,14 @@ This is an application of showing available products on the warehouse and regist
 - Show the list of available products
 - Show what articles are included in the product
 - Create Sales list
+- Sales items are sorted by creation date descending
 - Calculate products amount based on all available articles
 - add possibility to buy (register sale) a product => update sales list
-- decrease the amount of available products and related articles
+- decrease the amount of available articles when products are sold
 - show notification to user on successful sale
 
 ## Corner cases
-- still product in the list if he's unavailable, but prohibit its sale
+- still product in the list if he's unavailable to sale, but prohibit its sale
 - not to be able to buy more products that are available in the list
 
 ## Non Functional requirements:
@@ -46,5 +47,11 @@ This is an application of showing available products on the warehouse and regist
 - add Jenkinsfile with pipeline for CI/CD
 - Cypress e2e tests to ensure complete user flows
 
-# Performance improvements:
+## Performance improvements:
 1. Decrease bundle size: separation of devDependencies
+2. static files are stored in `src` folder that's managed by webpack optimization
+3. swap loading of fonts
+
+# What improvements would be good to make in the future:
+1. disable user click `Sell` button twice, while the request is being processed by the server
+2. Send second request to server for `products`, `articles` and `sales` if first one has failed

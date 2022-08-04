@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { Product } from '../../models';
@@ -6,27 +6,61 @@ import { ProductItem } from '../ProductItem/ProductItem';
 import { getAllProducts } from '../../services/products';
 
 import styles from './ProductList.module.scss';
+import { useArticleStore } from '../../stores/articles';
+import { getAllArticles } from '../../services/articles';
+import { useProductsStore } from '../../stores/products';
 
 export const ProductList = (): JSX.Element => {
-    const [products, setProducts] = useState<Product[]>([]);
+    const { setArticles, setIsFetchingArticlesFromApiErrorOccurred, setIsLoadingArticles } =
+        useArticleStore();
+    const {
+        setProducts,
+        products,
+        setIsFetchingProductsFromApiErrorOccurred,
+        fetchProductsFromServerError
+    } = useProductsStore();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         let mounted = true;
         setIsLoading(true);
 
-        getAllProducts()
-            .then((loadedProducts) => {
-                if (mounted) {
-                    setProducts(loadedProducts);
-                    setIsLoading(false);
-                }
-            })
-            .catch(() => {
-                setErrorMessage('Unable to fetch products from our Database');
+        (async () => {
+            try {
+                const loadedProductsFromApi = await getAllProducts();
+                console.log('Products loaded:', loadedProductsFromApi.length);
+                setProducts(loadedProductsFromApi);
                 setIsLoading(false);
-            });
+            } catch (err) {
+                console.log(err);
+                setIsFetchingProductsFromApiErrorOccurred(
+                    'Unable to fetch products from the Database'
+                );
+                setIsLoading(false);
+            }
+        })();
+
+        return () => {
+            mounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        let mounted = true;
+
+        (async () => {
+            try {
+                setIsLoadingArticles(true);
+                const loadedArticlesFromApi = await getAllArticles();
+                console.log('Articles loaded:', loadedArticlesFromApi.length);
+                setArticles(loadedArticlesFromApi || []);
+                setIsLoadingArticles(false);
+            } catch (err) {
+                console.log(err);
+                setIsFetchingArticlesFromApiErrorOccurred(true);
+                setIsLoadingArticles(false);
+            }
+        })();
 
         return () => {
             mounted = false;
@@ -47,7 +81,9 @@ export const ProductList = (): JSX.Element => {
             ) : (
                 <div className={styles['product-items']}>{renderProducts()}</div>
             )}
-            {errorMessage && <div className="global-error-message">{errorMessage}</div>}
+            {!!fetchProductsFromServerError && (
+                <div className="global-error-message">{fetchProductsFromServerError}</div>
+            )}
         </div>
     );
 };

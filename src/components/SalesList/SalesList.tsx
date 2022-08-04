@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { Product as ProductType, Sale as SaleType } from '../../models';
+import { Sale } from '../../models';
 
 import styles from './SalesList.module.scss';
 import { getAllSales } from '../../services/sales';
-import { getProductById } from '../../services/products';
 import { SaleItem } from '../SaleItem/SaleItem';
+import { useSalesStore } from '../../stores/sales';
 
 export const SalesList = (): JSX.Element => {
-    const [sales, setSales] = useState<SaleType[]>([]);
+    const { sales, setSales, setIsFetchingSalesFromApiErrorOccurred, fetchSalesFromServerError } =
+        useSalesStore();
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         let mounted = true;
         setIsLoading(true);
 
-        getAllSales()
-            .then((loadedProducts) => {
-                if (mounted) {
-                    setSales(loadedProducts);
-                    setIsLoading(false);
-                }
-            })
-            .catch(() => {
-                setErrorMessage('Unable to fetch sales from our Database');
+        (async () => {
+            try {
+                const loadedSalesFromApi = await getAllSales();
+                console.log('Sales loaded:', loadedSalesFromApi.length);
+                setSales(loadedSalesFromApi);
                 setIsLoading(false);
-            });
+            } catch (err) {
+                console.log(err);
+                setIsFetchingSalesFromApiErrorOccurred(
+                    'Unable to fetch products from the Database'
+                );
+                setIsLoading(false);
+            }
+        })();
 
         return () => {
             mounted = false;
@@ -39,7 +43,7 @@ export const SalesList = (): JSX.Element => {
             .sort(function (a, b) {
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             })
-            .map((sale: SaleType) => <SaleItem sale={sale} key={sale.id} />);
+            .map((sale: Sale) => <SaleItem sale={sale} key={sale.id} />);
     };
 
     return (
@@ -59,7 +63,9 @@ export const SalesList = (): JSX.Element => {
                     <tbody>{renderSales()}</tbody>
                 </table>
             )}
-            {errorMessage && <div className="global-error-message">{errorMessage}</div>}
+            {fetchSalesFromServerError && (
+                <div className="global-error-message">{fetchSalesFromServerError}</div>
+            )}
         </div>
     );
 };

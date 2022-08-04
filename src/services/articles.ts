@@ -2,7 +2,9 @@ import { Article } from '../models';
 import { handleErrors } from '../utils/ApiErrorHandler';
 
 export function getAllArticles(): Promise<Article[]> {
-    return fetch('http://localhost:7005/articles').then((data) => data.json());
+    return fetch('http://localhost:7005/articles')
+        .then(handleErrors)
+        .then((data) => data.json());
 }
 
 export function getArticleById(articleId: string): Promise<Article> {

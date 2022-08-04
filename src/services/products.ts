@@ -24,19 +24,20 @@ export function addProduct(product: Product) {
 export const calculateMaximumAmountOfProductsThatCanBeSold = (articles: Article[]): number => {
     if (!articles.length) return 0;
 
-    let possibleAmountPerArticle = [];
+    let possibleAmountOfProductsPerArticle = [];
 
     for (let i = 0; i < articles.length; i++) {
         if (articles[i].amountInStock === 0) {
-            possibleAmountPerArticle.push(0);
+            possibleAmountOfProductsPerArticle.push(0);
         } else if (!articles[i].amountRequired) {
             continue;
         } else {
-            possibleAmountPerArticle.push(
+            possibleAmountOfProductsPerArticle.push(
                 Math.floor(articles[i].amountInStock / articles[i].amountRequired!)
             );
         }
     }
 
-    return Math.min.apply(null, possibleAmountPerArticle.filter(Boolean));
+    // filter out zero values
+    return Math.min.apply(null, possibleAmountOfProductsPerArticle.filter(Boolean));
 };
