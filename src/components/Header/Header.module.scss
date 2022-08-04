@@ -1,0 +1,23 @@
+.header {
+    padding: 14px;
+    text-align: center;
+    background: #0058AB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+        margin: 0;
+    }
+
+    .logo {
+        color: white;
+        font-weight: bold;
+    }
+
+    .avatar {
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
+    }
+}

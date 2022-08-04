@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import SnackbarProvider from 'react-simple-snackbar';
 
+import 'bootstrap/dist/css/bootstrap.css';
 import './global.scss';
 
 import App from './App';
@@ -11,11 +12,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-    <React.StrictMode>
         <SnackbarProvider>
             <App />
         </SnackbarProvider>
-    </React.StrictMode>
 );
 
 reportWebVitals();

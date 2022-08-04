@@ -6,8 +6,9 @@ This is an application of showing available products on the warehouse and regist
 ## Features Roadmap
 - Show the list of available products
 - Show what articles are included in the product
+- Create Sales list
 - Calculate products amount based on all available articles
-- add possibility to buy (register sale) a product
+- add possibility to buy (register sale) a product => update sales list
 - decrease the amount of available products and related articles
 - show notification to user on successful sale
 
@@ -20,6 +21,7 @@ This is an application of showing available products on the warehouse and regist
 - Business and tech documentation
 - Meta tags for better SEO
 - prettier for code formatting
+- Responsive Design
 
 # Start
 ## How to start FE:

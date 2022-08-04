@@ -1,26 +1,35 @@
 import React from 'react';
-import logo from './assets/logo.svg';
-import './App.css';
+import Tabs from 'react-bootstrap/Tabs';
+// import logo from './assets/logo.svg';
+
+import { Header, ProductList } from './components';
+
+
+import styles from './App.module.scss';
+import {SalesList} from "./components/SalesList/SalesList";
+import {Tab} from "react-bootstrap";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <div className={styles.app}>
+                <Header title="Warehouse Manager" />
+                <div className="global-container">
+                    <Tabs
+                        defaultActiveKey="product-list"
+                        className="mb-3"
+                    >
+                        <Tab eventKey="product-list" title="Products">
+                            <ProductList />
+                        </Tab>
+                        <Tab eventKey="sales" title="Sales">
+                            <SalesList />
+                        </Tab>
+                    </Tabs>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;

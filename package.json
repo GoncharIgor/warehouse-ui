@@ -14,7 +14,9 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.0",
-    "react-simple-snackbar": "^1.1.11"
+    "react-simple-snackbar": "^1.1.11",
+    "react-bootstrap": "^2.4.0",
+    "bootstrap": "^5.2.0"
   },
   "devDependencies": {
     "prettier": "^2.7.1",
