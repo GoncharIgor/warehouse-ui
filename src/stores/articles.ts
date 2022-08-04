@@ -28,11 +28,6 @@ export const useArticleStore = create<ArticlesStore>((set, get) => ({
     addArticle: (newArticle: Article) => {
         set((store) => ({ articles: [...store.articles, newArticle] }));
     },
-    findArticleById: (id: string) => {
-        const state = get();
-        return state.articles.find((article) => article.id === id);
-    }
-
     /*updateArticle: (updatedArticle: Article) => {
         const state = get();
         const articleToUpdate = state.articles.find(article => article.id === updatedArticle.id);

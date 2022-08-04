@@ -9,7 +9,7 @@ export function getAllSales(): Promise<Sale[]> {
 
 type SaleData = Partial<Sale>;
 
-export function createSale({ amountSold, productId }: SaleData): Promise<Sale[]> {
+export function createSale({ amountSold, productId }: SaleData): Promise<Sale> {
     const reqOptions = generateRequestOptions('POST', { amountSold, productId });
 
     return fetch('http://localhost:7005/sales', reqOptions)

@@ -55,3 +55,4 @@ This is an application of showing available products on the warehouse and regist
 # What improvements would be good to make in the future:
 1. disable user click `Sell` button twice, while the request is being processed by the server
 2. Send second request to server for `products`, `articles` and `sales` if first one has failed
+3. Data caching for reducing our reliance on server stable responses

@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useSnackbar } from 'react-simple-snackbar';
 
 import { Article, Product } from '../../models';
-
-import { getArticleById } from '../../services/articles';
 import { ArticleComponent } from '../ArticleItem/Article';
 import { calculateMaximumAmountOfProductsThatCanBeSold } from '../../services/products';
 import { SaleForm } from '../SaleForm/SaleForm';
 import { createSale } from '../../services/sales';
 
-import styles from './ProductItem.module.scss';
 import { useArticleStore } from '../../stores/articles';
+import {useSalesStore} from "../../stores/sales";
+
+import styles from './ProductItem.module.scss';
 
 interface ProductProps {
     product: Product;
@@ -29,8 +29,10 @@ const snackBarOptions = {
 };
 
 export const ProductItem = ({ product }: ProductProps): JSX.Element => {
-    const [productArticles, setProductArticles] = useState<Article[]>([]);
     const { articles, isLoading } = useArticleStore();
+    const { addSale } = useSalesStore();
+
+    const [productArticles, setProductArticles] = useState<Article[]>([]);
 
     const [openSnackbar] = useSnackbar(snackBarOptions);
 
@@ -57,13 +59,16 @@ export const ProductItem = ({ product }: ProductProps): JSX.Element => {
             amountSold: numberOfProductsThatUserWantsToBuy,
             productId: product.id
         })
-            .then((res) => {
-                // @ts-ignore
-                openSnackbar(`${product.name} was sold in amount of ${res.amountSold}`);
+            .then((newlyAddedSale) => {
+                // because we only display sales for current user - we can update salesStore
+                // and display updated data to user, without additional request to server
+                addSale(newlyAddedSale);
+                openSnackbar(`${product.name} was sold in amount of ${newlyAddedSale.amountSold}`);
             })
             .catch((err) => {
                 console.log(err);
-                console.log('Error occured while adding sale');
+                console.log('Error occurred while adding sale');
+                openSnackbar(`Error occurred while adding ${product.name} sale`);
             });
     };
 
